@@ -20,6 +20,7 @@ public class Main {
     public static String CSV = "userid;groupid;creationdate;category;categorydescription;attributionstatus;actualvalue;unit;type\n";
 
     public static void main(String[] args) throws Exception {
+        // STEP 0 : Check Arguments
         if (args.length < 4) {
             System.out.println("4 args are required :\n\t- userid\n\t- consumerkey\n\t- token\n\t- hdfsmasteruri (8020 port)");
             System.exit(128);
@@ -30,20 +31,20 @@ public class Main {
         String oauth_token = args[2];
         String uri = args[3];
 
-        Withings withings = null;
-        logger.info("Calling Withings API...");
-        HttpRequest res = HttpRequest.get(WITHINGS_URL + "?action=getmeas&oauth_consumer_key=" + oauth_comsumerkey
-                + "&oauth_nonce=67bac1a37f5f03183c18fe29200f17b1&oauth_signature=2lZby%2FhCfqZXR6V5Qv6LYz9GYmg%3D&oauth_signature_method=HMAC-SHA1&oauth_timestamp=1449047956&oauth_token="
-                + oauth_token + "&oauth_version=1.0&userid=" + userid);
-        String body = res.body();
+        // STEP 1 : CALL WITHINGS API
+        Withings withings = callWithingsAPI(userid, oauth_comsumerkey, oauth_token);
 
-        withings = new Gson().fromJson(body, new TypeToken<Withings>() {
-        }.getType());
+        // STEP 2 : ENRICH WITHINGS
+        String measuregrps = enrichWithings(userid, withings);
 
+        // STEP 3 : STORE FILES IN HDFS
+        storeInHDFS(uri, withings, measuregrps);
+        logger.info("Done.");
+    }
+
+    private static String enrichWithings(String userid, Withings withings) {
         String measuregrps = new Gson().toJson(withings.getBody().getMeasuregrps());
-
         logger.info("Building CSV...");
-
         withings.getBody().getMeasuregrps().stream().forEach(measureGroup -> {
             measureGroup.getMeasures().stream().forEach(measure -> {
                 String cat_value = null;
@@ -62,7 +63,23 @@ public class Main {
                         + measure.getActualValue() + ";" + measure.getUnit() + ";" + measure.getType() + "\n";
             });
         });
+        return measuregrps;
+    }
 
+    private static Withings callWithingsAPI(String userid, String oauth_comsumerkey, String oauth_token) {
+        Withings withings = null;
+        logger.info("Calling Withings API...");
+        HttpRequest res = HttpRequest.get(WITHINGS_URL + "?action=getmeas&oauth_consumer_key=" + oauth_comsumerkey
+                + "&oauth_nonce=67bac1a37f5f03183c18fe29200f17b1&oauth_signature=2lZby%2FhCfqZXR6V5Qv6LYz9GYmg%3D&oauth_signature_method=HMAC-SHA1&oauth_timestamp=1449047956&oauth_token="
+                + oauth_token + "&oauth_version=1.0&userid=" + userid);
+        String body = res.body();
+
+        withings = new Gson().fromJson(body, new TypeToken<Withings>() {
+        }.getType());
+        return withings;
+    }
+
+    private static void storeInHDFS(String uri, Withings withings, String measuregrps) throws Exception {
         // Create Directories
         logger.debug("Create directory");
         FileSystem fs = HdfsUtils.getFileSystemFromUri(uri);
@@ -75,6 +92,5 @@ public class Main {
         logger.info("Import done of raw file : " + updatetime + ".json");
         HdfsUtils.createJson(fs, directorycsv, updatetime + ".csv", CSV);
         logger.info("Import done of csv file : " + updatetime + ".csv");
-        logger.info("Done.");
     }
 }
