@@ -1,6 +1,7 @@
 package io.saagie.demo.extract.withings.dto;
 
-import java.io.Serializable;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * A measure is an actual measurement of something. It has three parameters:
@@ -8,9 +9,11 @@ import java.io.Serializable;
  * A value which is the actual value of the measure (integer).
  * A unit which represents the power of 10 that has to be multipled by value to find the actual data (integer).
  *
- * @author jon
+ * @author youen
  */
-public class Measure implements Serializable
+@Data
+@NoArgsConstructor
+public class Measure
 {
 	private static final double POUND = 0.453592;
 	private static final double INCH = 0.0254;
@@ -23,74 +26,11 @@ public class Measure implements Serializable
 	private Double actualValue;
 
 	/** */
-	public Measure() {};
-
-	/** */
-	public Measure(int value, int type, int unit)
-	{
-		this.value = value;
-		this.type = type;
-		this.unit = unit;
-	}
-
-	public static void main(String[] args) {
-		Measure m1 = new Measure(79300, 1, -3);
-		System.out.println(m1.getMeasure(MeasureSystem.IMPERIAL));
-		System.out.println(m1.getMeasure(MeasureSystem.SI));
-		System.out.println("----------------------------");
-
-		Measure m2 = new Measure(173, 4, -2);
-		System.out.println(m2.getMeasure(MeasureSystem.IMPERIAL));
-		System.out.println(m2.getMeasure(MeasureSystem.SI));
-		System.out.println("----------------------------");
-
-		Measure m3 = new Measure(652, 5, -1);
-		System.out.println(m3.getMeasure(MeasureSystem.IMPERIAL));
-		System.out.println(m3.getMeasure(MeasureSystem.SI));
-		System.out.println("----------------------------");
-
-		Measure m4 = new Measure(178, 6, -1);
-		System.out.println(m4.getMeasure(MeasureSystem.IMPERIAL));
-		System.out.println(m4.getMeasure(MeasureSystem.SI));
-		System.out.println("----------------------------");
-
-		Measure m5 = new Measure(14125, 8, -3);
-		System.out.println(m5.getMeasure(MeasureSystem.IMPERIAL));
-		System.out.println(m5.getMeasure(MeasureSystem.SI));
-		System.out.println("----------------------------");
-	}
-
-	/** */
-	public int getValue()
-	{
-		return this.value;
-	}
-
-	/** */
 	public void setValue(int value)
 	{
 		this.value = value;
 		this.actualValue = this.getActualValue();
 	}
-
-	/** */
-	public int getType()
-	{
-		return this.type;
-	}
-
-	/** */
-	public void setType(int type)
-	{
-		this.type = type;
-	}
-
-	/** */
-	public int getUnit()
-	{
-		return this.unit;
-	}
-
 	/** */
 	public void setUnit(int unit)
 	{

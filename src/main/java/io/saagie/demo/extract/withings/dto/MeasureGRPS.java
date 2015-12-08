@@ -1,15 +1,20 @@
 package io.saagie.demo.extract.withings.dto;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 
 /**
- * Created by youen on 02/12/2015.
+ * Created by youen
  */
+@Data
+@NoArgsConstructor
 public class MeasureGRPS {
 
-    public int grpid;
-    public int attrib;
-    public int category;
-    public double date;
-    public List<Measure> measure;
+    private int grpid;
+    private int attrib;
+    private int category;
+    private double date;
+    private List<Measure> measure;
 }

@@ -1,6 +1,8 @@
 package io.saagie.demo.extract.withings.dto;
 
 import com.google.common.collect.ImmutableMap;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.Map;
 
@@ -13,8 +15,10 @@ import java.util.Map;
  * 6	Fat Ratio (%)
  * 8	Fat Mass Weight (Kg)
  *
- * @author jon
+ * @author youen
  */
+@AllArgsConstructor
+@Getter
 public enum MeasureType
 {
 	WEIGHT("Weight", 1),
@@ -27,12 +31,6 @@ public enum MeasureType
 	private String description;
 	private int type;
 
-	/** */
-	private MeasureType(String description, int type)
-	{
-		this.description = description;
-		this.type = type;
-	}
 
 	public synchronized static Map<Integer, MeasureType> getMeasureTypes() {
 		if (measureTypeMap == null) {
@@ -45,14 +43,5 @@ public enum MeasureType
 		return measureTypeMap;
 	}
 
-	/** */
-	public String getDescription() {
-		return this.description;
-	}
 
-	/** */
-	public int getType()
-	{
-		return this.type;
-	}
 }

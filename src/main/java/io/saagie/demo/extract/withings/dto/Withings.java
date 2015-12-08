@@ -1,34 +1,14 @@
 package io.saagie.demo.extract.withings.dto;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
- * Created by youen on 02/12/2015.
+ * Created by youen
  */
+@Data
+@NoArgsConstructor
 public class Withings {
-
-    public int status;
-    public Body body;
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public Body getBody() {
-        return body;
-    }
-
-    public void setBody(Body body) {
-        this.body = body;
-    }
-
-    @Override
-    public String toString() {
-        return "Withings{" +
-                "status=" + status +
-                ", body='" + body + '\'' +
-                '}';
-    }
+    private int status;
+    private Body body;
 }

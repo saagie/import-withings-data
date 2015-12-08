@@ -1,22 +1,19 @@
 package io.saagie.demo.extract.withings.dto;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.ArrayList;
 
 /**
- * Created by youen on 02/12/2015.
+ * Created by youen
  */
+@Data
+@NoArgsConstructor
 public class Body {
 
-    public int updatetime;
-    public ArrayList<MeasureGroup> measuregrps;
-    public String timezone;
+    private int updatetime;
+    private ArrayList<MeasureGroup> measuregrps;
+    private String timezone;
 
-    @Override
-    public String toString() {
-        return "Body{" +
-                "updatetime=" + updatetime +
-                ", measuregrps=" + measuregrps +
-                ", timezone='" + timezone + '\'' +
-                '}';
-    }
 }
