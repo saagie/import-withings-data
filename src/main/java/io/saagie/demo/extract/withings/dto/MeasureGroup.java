@@ -1,4 +1,4 @@
-package io.saagie.demo.extract.senseit.dto;
+package io.saagie.demo.extract.withings.dto;
 
 import java.io.Serializable;
 import java.util.Date;

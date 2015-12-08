@@ -1,4 +1,4 @@
-package io.saagie.demo.extract.senseit.dto;
+package io.saagie.demo.extract.withings.dto;
 
 /**
  * Category table
@@ -24,18 +24,6 @@ public enum Category
 	}
 
 	/** */
-	public String getDescription()
-	{
-		return this.description;
-	}
-
-	/** */
-	public int getValue()
-	{
-		return this.value;
-	}
-
-	/** */
 	public static Category valueOf(int ordinal)
 	{
 		Category result = null;
@@ -49,5 +37,15 @@ public enum Category
 				break;
 		}
 		return result;
+	}
+
+	/** */
+	public String getDescription() {
+		return this.description;
+	}
+
+	/** */
+	public int getValue() {
+		return this.value;
 	}
 }

@@ -1,4 +1,4 @@
-package io.saagie.demo.extract.senseit.dto;
+package io.saagie.demo.extract.withings.dto;
 
 /**
  * Attribution status table
@@ -8,7 +8,7 @@ package io.saagie.demo.extract.senseit.dto;
  * 2	The measuregroup has been entered manually for this particular use
  * 4	The measuregroup has been entered manually during user creation (and may not be accurate)
  *
- * @author jon
+ * @author youen
  */
 public enum AttributionStatus
 {
@@ -28,23 +28,10 @@ public enum AttributionStatus
 	}
 
 	/** */
-	public String getDescription()
-	{
-		return this.description;
-	}
-
-	/** */
-	public int getValue()
-	{
-		return this.value;
-	}
-
-	/** */
 	public static AttributionStatus valueOf(int ordinal)
 	{
 		AttributionStatus result = null;
-		switch(ordinal)
-		{
+		switch (ordinal) {
 			case 0:
 				result = NOT_AMBIGUOUS;
 				break;
@@ -59,5 +46,17 @@ public enum AttributionStatus
 				break;
 		}
 		return result;
+	}
+
+	/** */
+	public String getDescription()
+	{
+		return this.description;
+	}
+
+	/** */
+	public int getValue()
+	{
+		return this.value;
 	}
 }

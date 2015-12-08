@@ -1,4 +1,4 @@
-package io.saagie.demo.extract.senseit.dto;
+package io.saagie.demo.extract.withings.dto;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -107,27 +107,26 @@ public class User implements Serializable
 	}
 
 	/** */
-	public void setPublic(boolean isPublic)
-	{
-		this.isPublic = isPublic;
-	}
-
-	/** */
 	public boolean isPublic()
 	{
 		return this.isPublic;
 	}
 
 	/** */
-	public void setId(Long id)
+	public void setPublic(boolean isPublic)
 	{
-		this.id = id;
+		this.isPublic = isPublic;
 	}
 
 	/** */
 	public Long getId()
 	{
 		return this.id;
+	}
+
+	/** */
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	/** */

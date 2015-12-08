@@ -1,12 +1,12 @@
-package io.saagie.demo.extract.senseit;
+package io.saagie.demo.extract.withings;
 
 
 import com.github.kevinsawicki.http.HttpRequest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import io.saagie.demo.extract.senseit.dto.Measure;
-import io.saagie.demo.extract.senseit.dto.MeasureGroup;
-import io.saagie.demo.extract.senseit.dto.Withings;
+import io.saagie.demo.extract.withings.dto.Measure;
+import io.saagie.demo.extract.withings.dto.MeasureGroup;
+import io.saagie.demo.extract.withings.dto.Withings;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.log4j.Logger;

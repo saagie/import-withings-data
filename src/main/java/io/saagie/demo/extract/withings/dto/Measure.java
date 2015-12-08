@@ -1,4 +1,4 @@
-package io.saagie.demo.extract.senseit.dto;
+package io.saagie.demo.extract.withings.dto;
 
 import java.io.Serializable;
 
@@ -31,6 +31,33 @@ public class Measure implements Serializable
 		this.value = value;
 		this.type = type;
 		this.unit = unit;
+	}
+
+	public static void main(String[] args) {
+		Measure m1 = new Measure(79300, 1, -3);
+		System.out.println(m1.getMeasure(MeasureSystem.IMPERIAL));
+		System.out.println(m1.getMeasure(MeasureSystem.SI));
+		System.out.println("----------------------------");
+
+		Measure m2 = new Measure(173, 4, -2);
+		System.out.println(m2.getMeasure(MeasureSystem.IMPERIAL));
+		System.out.println(m2.getMeasure(MeasureSystem.SI));
+		System.out.println("----------------------------");
+
+		Measure m3 = new Measure(652, 5, -1);
+		System.out.println(m3.getMeasure(MeasureSystem.IMPERIAL));
+		System.out.println(m3.getMeasure(MeasureSystem.SI));
+		System.out.println("----------------------------");
+
+		Measure m4 = new Measure(178, 6, -1);
+		System.out.println(m4.getMeasure(MeasureSystem.IMPERIAL));
+		System.out.println(m4.getMeasure(MeasureSystem.SI));
+		System.out.println("----------------------------");
+
+		Measure m5 = new Measure(14125, 8, -3);
+		System.out.println(m5.getMeasure(MeasureSystem.IMPERIAL));
+		System.out.println(m5.getMeasure(MeasureSystem.SI));
+		System.out.println("----------------------------");
 	}
 
 	/** */
@@ -167,40 +194,6 @@ public class Measure implements Serializable
 	}
 
 	/** */
-	public enum MeasureSystem
-	{
-		IMPERIAL, SI;
-	}
-
-	public static void main(String[] args)
-	{
-		Measure m1 = new Measure(79300, 1, -3);
-		System.out.println(m1.getMeasure(MeasureSystem.IMPERIAL));
-		System.out.println(m1.getMeasure(MeasureSystem.SI));
-		System.out.println("----------------------------");
-
-		Measure m2 = new Measure(173, 4, -2);
-		System.out.println(m2.getMeasure(MeasureSystem.IMPERIAL));
-		System.out.println(m2.getMeasure(MeasureSystem.SI));
-		System.out.println("----------------------------");
-
-		Measure m3 = new Measure(652, 5, -1);
-		System.out.println(m3.getMeasure(MeasureSystem.IMPERIAL));
-		System.out.println(m3.getMeasure(MeasureSystem.SI));
-		System.out.println("----------------------------");
-
-		Measure m4 = new Measure(178, 6, -1);
-		System.out.println(m4.getMeasure(MeasureSystem.IMPERIAL));
-		System.out.println(m4.getMeasure(MeasureSystem.SI));
-		System.out.println("----------------------------");
-
-		Measure m5 = new Measure(14125, 8, -3);
-		System.out.println(m5.getMeasure(MeasureSystem.IMPERIAL));
-		System.out.println(m5.getMeasure(MeasureSystem.SI));
-		System.out.println("----------------------------");
-	}
-
-	/** */
 	@Override
 	public String toString()
 	{
@@ -217,8 +210,7 @@ public class Measure implements Serializable
 	 * 152.81574630945872
 	 * 152.82
 	 */
-	public double roundToHundred(double val)
-	{
+	public double roundToHundred(double val) {
 		String str = Double.toString(val);
 		int index = str.indexOf('.');
 		String prefixChunk = str.substring(0, index);
@@ -227,5 +219,11 @@ public class Measure implements Serializable
 			decimalChunk = decimalChunk.substring(0, 3);
 		double chunkDbl = Math.round(Double.valueOf(decimalChunk) * Math.pow(10, -1)) * Math.pow(10, -2);
 		return (Double.valueOf(prefixChunk) + chunkDbl);
+	}
+
+	/** */
+	public enum MeasureSystem
+	{
+		IMPERIAL, SI;
 	}
 }

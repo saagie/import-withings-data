@@ -1,4 +1,4 @@
-package io.saagie.demo.extract.senseit.dto;
+package io.saagie.demo.extract.withings.dto;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -23,6 +23,7 @@ public enum MeasureType
 	FAT_RATIO("Fat Ratio (%)", 6),
 	FAT_MASS_WEIGHT("Fat Mass Weight", 8);
 
+	private static Map<Integer, MeasureType> measureTypeMap;
 	private String description;
 	private int type;
 
@@ -33,9 +34,19 @@ public enum MeasureType
 		this.type = type;
 	}
 
+	public synchronized static Map<Integer, MeasureType> getMeasureTypes() {
+		if (measureTypeMap == null) {
+			ImmutableMap.Builder<Integer, MeasureType> mapBuilder = ImmutableMap.builder();
+			for (MeasureType type : MeasureType.values()) {
+				mapBuilder.put(type.getType(), type);
+			}
+			measureTypeMap = mapBuilder.build();
+		}
+		return measureTypeMap;
+	}
+
 	/** */
-	public String getDescription()
-	{
+	public String getDescription() {
 		return this.description;
 	}
 
@@ -44,16 +55,4 @@ public enum MeasureType
 	{
 		return this.type;
 	}
-
-    private static Map<Integer, MeasureType> measureTypeMap;
-    public synchronized static Map<Integer, MeasureType> getMeasureTypes() {
-        if (measureTypeMap == null) {
-            ImmutableMap.Builder<Integer, MeasureType> mapBuilder = ImmutableMap.builder();
-            for (MeasureType type : MeasureType.values()) {
-                mapBuilder.put(type.getType(), type);
-            }
-            measureTypeMap = mapBuilder.build();
-        }
-        return measureTypeMap;
-    }
 }
