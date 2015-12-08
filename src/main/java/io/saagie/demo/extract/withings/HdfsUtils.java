@@ -1,4 +1,4 @@
-package io.saagie.demo.extract.senseit;
+package io.saagie.demo.extract.withings;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataOutputStream;
