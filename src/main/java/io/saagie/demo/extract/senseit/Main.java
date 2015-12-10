@@ -11,6 +11,8 @@ import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.log4j.Logger;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Iterator;
 
 
@@ -21,6 +23,7 @@ public class Main {
 
 
    private static final Logger logger = Logger.getLogger(Main.class);
+   public static final char SEP = ';';
 
    public static void main(String[] args) throws Exception {
       if (args.length<4) {
@@ -41,6 +44,38 @@ public class Main {
       w=new Gson().fromJson(body, new TypeToken<Withings>() { }.getType());
       String measuregrps=new Gson().toJson(w.getBody().measuregrps);
 
+
+      String csv=buildCSV(userid,w);
+
+      // Create Directories
+      logger.debug("Create directory");
+      FileSystem fs = HdfsUtils.getFileSystemFromUri(uri);
+      Path directoryraw = HdfsUtils.createDirectory(fs, "/iot/withings/raw");
+      Path directorycsv = HdfsUtils.createDirectory(fs, "/iot/withings/csv");
+
+
+      logger.debug("Create file");
+      // Creating a file in HDFS
+      HdfsUtils.createJson(fs, directoryraw, w.getBody().updatetime+".json", measuregrps);
+
+      logger.info("Import done of raw file : "+w.getBody().updatetime+".json");
+
+      HdfsUtils.createJson(fs, directorycsv, w.getBody().updatetime+".csv", csv.getBytes());
+
+      logger.info("Import done of csv file : "+w.getBody().updatetime+".csv");
+
+
+      logger.info("Done.");
+
+
+   }
+
+
+   private static String buildCSV(String userid, Withings w) {
+      logger.info("Building CSV...");
+
+      SimpleDateFormat sdfin=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+      SimpleDateFormat sdfout=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
       logger.info("Building CSV...");
       String csv="userid;groupid;creationdate;category;categorydescription;attributionstatus;actualvalue;unit;type\n";
@@ -64,30 +99,12 @@ public class Main {
             if (mg.getAttributionStatus()!=null) {
                att_status=mg.getCategory().getValue()+"";
             }
-            csv+=userid+";"+mg.getGroupId()+";"+mg.getCreationDate()+";"+cat_value+";"+cat_des+";"+att_status+";"+m.getActualValue()+";"+m.getUnit()+";"+m.getType()+"\n";
+            String date=sdfout.format(mg.getCreationDate());
+
+            csv+=userid+";"+mg.getGroupId()+SEP+date+SEP+cat_value+SEP+cat_des+SEP+att_status+SEP+m.getActualValue()+SEP+m.getUnit()+SEP+m.getType()+"\n";
          }
       }
-
-      // Create Directories
-      logger.debug("Create directory");
-      FileSystem fs = HdfsUtils.getFileSystemFromUri(uri);
-      Path directoryraw = HdfsUtils.createDirectory(fs, "/iot/withings/raw");
-      Path directorycsv = HdfsUtils.createDirectory(fs, "/iot/withings/csv");
-
-
-      logger.debug("Create file");
-      // Creating a file in HDFS
-      HdfsUtils.createJson(fs, directoryraw, w.getBody().updatetime+".json", measuregrps);
-
-      logger.info("Import done of raw file : "+w.getBody().updatetime+".json");
-
-      HdfsUtils.createJson(fs, directorycsv, w.getBody().updatetime+".csv", csv);
-
-      logger.info("Import done of csv file : "+w.getBody().updatetime+".csv");
-
-
-      logger.info("Done.");
-
-
+      //logger.debug(csv);
+      return csv;
    }
 }
